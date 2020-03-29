@@ -6,6 +6,9 @@ import com.zhaoyang.tankbattle.entity.bullet.BulletScheduledService;
 import com.zhaoyang.tankbattle.entity.tank.EnemyTank;
 import com.zhaoyang.tankbattle.entity.tank.PlayerTank;
 import com.zhaoyang.tankbattle.entity.wall.Wall;
+import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
+import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
+import com.zhaoyang.tankbattle.window.canvas.WallCanvas;
 import javafx.concurrent.Worker;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -29,11 +32,15 @@ public class Game {
 
 //    private static GraphicsContext gc;
 
-    public static GraphicsContext bullet_canvas_gc;
-
     public static GraphicsContext tank_canvas_gc;
 
     public static GraphicsContext wall_canvas_gc;
+
+    public static BulletCanvas bulletCanvas;
+
+    public static TankCanvas tankCanvas;
+
+    public static WallCanvas wallCanvas;
 
     public static boolean isRunning = true;
 

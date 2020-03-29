@@ -19,7 +19,3 @@ public class EnemyTank extends Tank {
         PlayerTank playerTank = Game.playerTank;
     }
 }
-
-class Point {
-    double x, y;
-}
