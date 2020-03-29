@@ -1,6 +1,7 @@
 package com.zhaoyang.tankbattle.entity.bullet;
 
 import com.zhaoyang.tankbattle.util.game.Game;
+import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 
@@ -16,9 +17,9 @@ public class BulletScheduledService extends ScheduledService<String> {
             @Override
             protected String call() throws Exception {
                 Game.bullets.forEach(bullet -> {
-                    bullet.clean(Game.getGc());
+                    bullet.clean();
                     if (bullet.move()) {
-                        bullet.draw(Game.getGc());
+                        Platform.runLater(bullet::draw);
                     }
                 });
                 Game.checkBullet();

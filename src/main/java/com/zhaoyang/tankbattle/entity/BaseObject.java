@@ -1,9 +1,7 @@
 package com.zhaoyang.tankbattle.entity;
 
 import com.zhaoyang.tankbattle.util.ThreadFactory;
-import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.util.game.Img;
-import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Getter;
@@ -27,9 +25,11 @@ public abstract class BaseObject {
 
     public Image current_img;
 
+    public GraphicsContext current_gc;
+
     //绘制图形到canvas上
-    public void draw(GraphicsContext gc) {
-        gc.drawImage(current_img,
+    public void draw() {
+        current_gc.drawImage(current_img,
                 1, 1, current_img.getWidth(), current_img.getHeight(),
                 x, y, side_length, side_length);
     }
@@ -42,24 +42,24 @@ public abstract class BaseObject {
         log.info(object_center_x + "   " + object_center_y);
         Thread thread = new Thread(() -> {
             for (int i = 0; i < 8; i++) {
-                Game.getGc().drawImage(blast[i],
+                current_gc.drawImage(blast[i],
                         1, 1, blast[i].getWidth(), blast[i].getHeight(),
                         x, y, side_length, side_length);
 //                try {
-////                    Thread.sleep(50);
-////                } catch (InterruptedException e) {
-////                    e.printStackTrace();
-////                }
+//                    Thread.sleep(20);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
-            Game.getGc().clearRect(x, y, side_length, side_length);
-
+            current_gc.clearRect(x, y, side_length, side_length);
         });
         ThreadFactory.execute(thread);
+        thread.interrupt();
     }
 
     //清除物体在canvas上的图像
-    public void clean(GraphicsContext gc) {
-        gc.clearRect(x, y, side_length, side_length);
+    public void clean() {
+        current_gc.clearRect(x, y, side_length, side_length);
     }
 
     //物体被击中的抽象方法，由子类实现。

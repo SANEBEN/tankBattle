@@ -21,6 +21,7 @@ public class Bullet extends BaseObject {
     public Bullet(Image img, double x, double y, Direction direction) {
         side_length = Game.UNIT_LENGTH / 4;
         this.current_img = img;
+        this.current_gc = Game.bullet_canvas_gc;
         //因为x,y的数值为坦克左上角的坐标，为了试子弹从坦克的炮管的位置打出，需要调整子弹绘制的坐标
         switch (direction) {
             case UP:
@@ -72,14 +73,14 @@ public class Bullet extends BaseObject {
                 x -= speed;
         }
         List<BaseObject> baseObjectList = new ArrayList<>();
-        baseObjectList.addAll(Game.playerTanks);
+        baseObjectList.add(Game.playerTank);
         baseObjectList.addAll(Game.enemyTanks);
         baseObjectList.addAll(Game.walls);
         for (BaseObject object : baseObjectList) {
             if (collisionDetection(object)) {
                 x = backup_x;
                 y = backup_y;
-                this.clean(Game.getGc());
+                this.clean();
                 Game.bullets.remove(this);
                 Platform.runLater(object::beHit);
                 return false;

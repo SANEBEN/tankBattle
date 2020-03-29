@@ -4,10 +4,10 @@ import com.zhaoyang.tankbattle.entity.BaseObject;
 import com.zhaoyang.tankbattle.entity.Direction;
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
 import com.zhaoyang.tankbattle.util.game.Game;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
  * @author 昭阳
  * @date 2020/3/26 19:43
  */
+@Log
 @Getter
 @Setter
 public abstract class Tank extends BaseObject {
@@ -23,12 +24,13 @@ public abstract class Tank extends BaseObject {
     //血量
     private int blood;
     //移动速度
-    private int speed = 4;
+    private int speed = 8;
 
     public Tank() {
         current_img = down;
         side_length = Game.UNIT_LENGTH;
         direction = Direction.DOWN;
+        current_gc = Game.tank_canvas_gc;
     }
 
     private Image up;
@@ -73,7 +75,7 @@ public abstract class Tank extends BaseObject {
         double backup_x, backup_y;
         backup_x = x;
         backup_y = y;
-        Game.getGc().clearRect(x, y, Game.UNIT_LENGTH, Game.UNIT_LENGTH);
+        current_gc.clearRect(x, y, side_length, side_length);
         switch (direction) {
             case UP:
                 y -= speed;
@@ -96,10 +98,11 @@ public abstract class Tank extends BaseObject {
             if (collisionDetection(object)) {
                 x = backup_x;
                 y = backup_y;
-                break;
+                draw();
+                return;
             }
         }
-        draw(Game.getGc());
+        draw();
     }
 
     @Override

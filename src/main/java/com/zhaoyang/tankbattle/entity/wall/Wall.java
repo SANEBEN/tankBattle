@@ -16,14 +16,15 @@ public class Wall extends BaseObject {
         this.y = y;
         this.current_img = img;
         this.breakable = breakable;
+        this.current_gc = Game.wall_canvas_gc;
     }
 
     @Override
     public void beHit() {
         if (isBreakable()) {
-            Game.getGc().clearRect(x, y, side_length, side_length);
+            current_gc.clearRect(x, y, side_length, side_length);
             Game.walls.remove(this);
-            explode();
+//            explode();
         }
     }
 }

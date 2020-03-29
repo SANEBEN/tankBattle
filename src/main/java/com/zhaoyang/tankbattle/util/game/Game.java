@@ -27,7 +27,13 @@ import java.util.List;
 @Setter
 public class Game {
 
-    private static GraphicsContext gc;
+//    private static GraphicsContext gc;
+
+    public static GraphicsContext bullet_canvas_gc;
+
+    public static GraphicsContext tank_canvas_gc;
+
+    public static GraphicsContext wall_canvas_gc;
 
     public static boolean isRunning = true;
 
@@ -63,7 +69,7 @@ public class Game {
     public static List<Wall> walls = new ArrayList<>();
 
     //玩家坦克
-    public static List<PlayerTank> playerTanks = new ArrayList<>();
+    public static PlayerTank playerTank;
 
     //电脑坦克
     public static List<EnemyTank> enemyTanks = new ArrayList<>();
@@ -116,18 +122,18 @@ public class Game {
                 int mark = map[y][x];
                 if (mark == 2) {
                     Wall wall = new Wall(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.STEEL, false);
-                    wall.draw(Game.gc);
+                    wall.draw();
                     walls.add(wall);
                 } else if (mark == 1) {
                     Wall wall = new Wall(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.WALL, true);
-                    wall.draw(Game.gc);
+                    wall.draw();
                     walls.add(wall);
                 }
             }
         }
     }
 
-    public static void InitNpc(GraphicsContext gc) {
+    public static void InitNpc() {
         EnemyTank enemyTank = new EnemyTank();
         enemyTank.setBlood(10);
         enemyTank.setSpeed(2);
@@ -138,10 +144,10 @@ public class Game {
         enemyTank.setRight(Img.TANK_ENEMY_GREEN_RIGHT);
         enemyTank.setDirection(Direction.DOWN);
         enemyTanks.add(enemyTank);
-        enemyTank.draw(gc);
+        enemyTank.draw();
     }
 
-    public static void InitPlayer(GraphicsContext gc) {
+    public static void InitPlayer() {
         PlayerTank playerTank = new PlayerTank();
         playerTank.setBlood(10);
         playerTank.setSpeed(2);
@@ -151,15 +157,7 @@ public class Game {
         playerTank.setLeft(Img.TANK_PLAYER_YELLOW_LEFT);
         playerTank.setRight(Img.TANK_PLAYER_YELLOW_RIGHT);
         playerTank.setDirection(Direction.LEFT);
-        playerTanks.add(playerTank);
-        playerTank.draw(gc);
-    }
-
-     public static GraphicsContext getGc() {
-        return gc;
-    }
-
-    public static void setGc(GraphicsContext gc) {
-        Game.gc = gc;
+        Game.playerTank = playerTank;
+        playerTank.draw();
     }
 }

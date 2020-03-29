@@ -1,10 +1,8 @@
 package com.zhaoyang.tankbattle.entity.tank;
 
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
+import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.util.game.Img;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 昭阳
@@ -18,8 +16,7 @@ public class EnemyTank extends Tank {
     }
 
     private void findTheWay() {
-        List<Point> open = new ArrayList<>();
-        List<Point> close = new ArrayList<>();
+        PlayerTank playerTank = Game.playerTank;
     }
 }
 
