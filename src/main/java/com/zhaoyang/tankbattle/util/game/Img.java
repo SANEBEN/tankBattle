@@ -1,5 +1,6 @@
 package com.zhaoyang.tankbattle.util.game;
 
+import com.sun.org.apache.bcel.internal.generic.IADD;
 import javafx.scene.image.Image;
 
 /**
@@ -25,6 +26,7 @@ public class Img {
     public static final Image STEEL_SMALL = new Image("/img/wall/steel.gif");
     public static final Image GRASS = new Image("/img/wall/grass.png");
     public static final Image WATER = new Image("/img/wall/water.gif");
+    public static final Image BASE = new Image("/img/wall/base.gif");
 
     /*
     坦克贴图素材

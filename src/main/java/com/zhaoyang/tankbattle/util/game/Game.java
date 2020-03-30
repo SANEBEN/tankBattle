@@ -4,7 +4,10 @@ import com.zhaoyang.tankbattle.entity.*;
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
 import com.zhaoyang.tankbattle.entity.bullet.BulletScheduledService;
 import com.zhaoyang.tankbattle.entity.tank.EnemyTank;
+import com.zhaoyang.tankbattle.entity.tank.EnemyTankScheduleService;
 import com.zhaoyang.tankbattle.entity.tank.PlayerTank;
+import com.zhaoyang.tankbattle.entity.tank.TankScheduleService;
+import com.zhaoyang.tankbattle.entity.wall.Base;
 import com.zhaoyang.tankbattle.entity.wall.Wall;
 import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
 import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
@@ -31,8 +34,8 @@ import java.util.List;
 public class Game {
 
 //    private static GraphicsContext gc;
-
-    public static GraphicsContext tank_canvas_gc;
+//
+//    public static GraphicsContext tank_canvas_gc;
 
     public static GraphicsContext wall_canvas_gc;
 
@@ -41,6 +44,8 @@ public class Game {
     public static TankCanvas tankCanvas;
 
     public static WallCanvas wallCanvas;
+
+    private static Base base;//玩家基地，被敌人击中则游戏结束
 
     public static boolean isRunning = true;
 
@@ -66,9 +71,9 @@ public class Game {
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 4, 1, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
     };
 
@@ -86,10 +91,22 @@ public class Game {
 
     private static BulletScheduledService bulletScheduledService = new BulletScheduledService();
 
+    private static TankScheduleService tankScheduleService = new TankScheduleService();
+
+    private static EnemyTankScheduleService enemyTankScheduleService = new EnemyTankScheduleService();
+
     static {
         bulletScheduledService.setDelay(Duration.seconds(0.02));
         bulletScheduledService.setPeriod(Duration.seconds(0.02));
         bulletScheduledService.start();
+
+        tankScheduleService.setDelay(Duration.seconds(0.02));
+        tankScheduleService.setPeriod(Duration.seconds(0.02));
+        tankScheduleService.start();
+
+        enemyTankScheduleService.setDelay(Duration.seconds(0.1));
+        enemyTankScheduleService.setPeriod(Duration.seconds(0.02));
+        enemyTankScheduleService.start();
 
         bulletScheduledService.valueProperty().addListener((observable, oldValue, newValue) -> {
             log.info(oldValue);
@@ -135,6 +152,14 @@ public class Game {
                     Wall wall = new Wall(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.WALL, true);
                     wall.draw();
                     walls.add(wall);
+                } else if (mark == 3) {
+                    //要实现草丛的效果就不把草的绘图加到障碍物的列表中了，这样就不会在碰撞检测里面被检测
+                    Wall wall = new Wall(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.GRASS, true);
+                    wall.draw();
+                } else if (mark == 4) {
+                    Base base = new Base(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.BASE, true);
+                    base.draw();
+                    Game.base = base;
                 }
             }
         }
@@ -144,14 +169,13 @@ public class Game {
         EnemyTank enemyTank = new EnemyTank();
         enemyTank.setBlood(10);
         enemyTank.setSpeed(2);
-        enemyTank.setLocation(32, 32);
+        enemyTank.setLocation(320, 320);
         enemyTank.setUp(Img.TANK_ENEMY_GREEN_TOP);
         enemyTank.setDown(Img.TANK_ENEMY_GREEN_BUTTON);
         enemyTank.setLeft(Img.TANK_ENEMY_GREEN_LEFT);
         enemyTank.setRight(Img.TANK_ENEMY_GREEN_RIGHT);
         enemyTank.setDirection(Direction.DOWN);
         enemyTanks.add(enemyTank);
-        enemyTank.draw();
     }
 
     public static void InitPlayer() {
@@ -165,6 +189,6 @@ public class Game {
         playerTank.setRight(Img.TANK_PLAYER_YELLOW_RIGHT);
         playerTank.setDirection(Direction.LEFT);
         Game.playerTank = playerTank;
-        playerTank.draw();
+//        playerTank.draw();
     }
 }

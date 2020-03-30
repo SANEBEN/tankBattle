@@ -2,6 +2,7 @@ package com.zhaoyang.tankbattle.entity;
 
 import com.zhaoyang.tankbattle.util.ThreadFactory;
 import com.zhaoyang.tankbattle.util.game.Img;
+import com.zhaoyang.tankbattle.window.BasicMap;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Getter;
@@ -64,4 +65,7 @@ public abstract class BaseObject {
 
     //物体被击中的抽象方法，由子类实现。
     public abstract void beHit();
+
+    //物体碰撞检测的方法
+    public abstract BaseObject collisionDetection();
 }

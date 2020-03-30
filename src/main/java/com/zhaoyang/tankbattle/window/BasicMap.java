@@ -1,24 +1,21 @@
 package com.zhaoyang.tankbattle.window;
 
 import com.zhaoyang.tankbattle.entity.Direction;
-import com.zhaoyang.tankbattle.entity.bullet.Bullet;
-import com.zhaoyang.tankbattle.entity.tank.PlayerTank;
 import com.zhaoyang.tankbattle.util.ThreadFactory;
 import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
 import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
 import com.zhaoyang.tankbattle.window.canvas.WallCanvas;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.extern.java.Log;
 
-import java.util.*;
+import static com.zhaoyang.tankbattle.util.game.Game.playerTank;
 
 /**
  * @author 昭阳
@@ -26,6 +23,9 @@ import java.util.*;
  */
 @Log
 public class BasicMap extends Application {
+
+    static boolean isMove = false;
+
     public void start(Stage primaryStage) {
         load(primaryStage);
         primaryStage.show();
@@ -55,80 +55,68 @@ public class BasicMap extends Application {
 
         //http://blog.sina.com.cn/s/blog_ed8cec680102vlxz.html
 
-        Set<KeyCode> press_key = Collections.synchronizedSet(new HashSet<>());
+        scene.setOnKeyPressed(new KeyPressHandler());
 
-        scene.setOnKeyPressed(event -> {
-//            log.info("press   " + event.getCode().getName());
-//            if (press_key.contains(event.getCode())) {
-//                press_key.add(event.getCode());
-//            }
-            PlayerTank playerTank = Game.playerTank;
-            switch (event.getCode()) {
-                case W:
-                    playerTank.setDirection(Direction.UP);
-                    playerTank.move();
-                    break;
-                case S:
-                    playerTank.setDirection(Direction.DOWN);
-                    playerTank.move();
-                    break;
-                case A:
-                    playerTank.setDirection(Direction.LEFT);
-                    playerTank.move();
-                    break;
-                case D:
-                    playerTank.setDirection(Direction.RIGHT);
-                    playerTank.move();
-                    break;
-                case SPACE:
-                    Game.addBullet(playerTank.fire());
-            }
-        });
-
-//        scene.setOnKeyReleased(event -> {
-//            log.info("release   " + event.getCode().getName());
-//            press_key.remove(event.getCode());
-//        });
-
-//        Thread executeThread = new Thread(() -> {
-//            PlayerTank playerTank = Game.playerTank;
-//            while (true){
-//                for (KeyCode code : press_key) {
-//                    log.info("execute   " + code.getName());
-//                    switch (code) {
-//                        case W:
-//                            playerTank.setDirection(Direction.UP);
-//                            playerTank.move();
-//                            break;
-//                        case S:
-//                            playerTank.setDirection(Direction.DOWN);
-//                            playerTank.move();
-//                            break;
-//                        case A:
-//                            playerTank.setDirection(Direction.LEFT);
-//                            playerTank.move();
-//                            break;
-//                        case D:
-//                            playerTank.setDirection(Direction.RIGHT);
-//                            playerTank.move();
-//                            break;
-//                        case SPACE:
-//                            Game.addBullet(playerTank.fire());
-//                    }
-//                }
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-
-//        ThreadFactory.setThreads(executeThread);
-//
-//        ThreadFactory.execute(executeThread);
-
+        scene.setOnKeyReleased(new KeyReleaseHandler());
 
         stage.setOnCloseRequest(event -> ThreadFactory.stopAll());
+    }
+}
+
+@Log
+class KeyPressHandler implements EventHandler<KeyEvent> {
+    @Override
+    public void handle(KeyEvent event) {
+        switch (event.getCode()) {
+            case W:
+                playerTank.setDirection(Direction.UP);
+                BasicMap.isMove = true;
+                playerTank.move();
+                break;
+            case S:
+                playerTank.setDirection(Direction.DOWN);
+                BasicMap.isMove = true;
+                playerTank.move();
+                break;
+            case A:
+                playerTank.setDirection(Direction.LEFT);
+                BasicMap.isMove = true;
+                playerTank.move();
+                break;
+            case D:
+                playerTank.setDirection(Direction.RIGHT);
+                BasicMap.isMove = true;
+                playerTank.move();
+                break;
+            case SPACE:
+                Game.addBullet(playerTank.fire());
+        }
+    }
+}
+
+class KeyReleaseHandler implements EventHandler<KeyEvent> {
+    @Override
+    public void handle(KeyEvent event) {
+        switch (event.getCode()) {
+            case W:
+            case S:
+            case A:
+            case D:
+                BasicMap.isMove = false;
+        }
+    }
+}
+
+class moveThread extends Thread{
+    @Override
+    public void run() {
+        while (BasicMap.isMove) {
+            playerTank.move();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

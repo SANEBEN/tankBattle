@@ -9,9 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author 昭阳
  * @date 2020/3/26 19:43
@@ -30,7 +27,7 @@ public abstract class Tank extends BaseObject {
         current_img = down;
         side_length = Game.UNIT_LENGTH;
         direction = Direction.DOWN;
-        current_gc = Game.tank_canvas_gc;
+        current_gc = Game.tankCanvas.getGraphicsContext2D();
     }
 
     private Image up;
@@ -61,21 +58,11 @@ public abstract class Tank extends BaseObject {
         }
     }
 
-    public boolean collisionDetection(BaseObject object) {
-        double current_center_x = x + Game.UNIT_LENGTH / 2;
-        double current_center_y = y + Game.UNIT_LENGTH / 2;
-        double center_x = object.x + Game.UNIT_LENGTH / 2;
-        double center_y = object.y + Game.UNIT_LENGTH / 2;
-        //纵向判断
-        return Math.abs(current_center_x - center_x) < Game.UNIT_LENGTH &&//横向判断
-                Math.abs(current_center_y - center_y) < Game.UNIT_LENGTH;
-    }
-
-    public void move() {
+    public boolean move() {
         double backup_x, backup_y;
         backup_x = x;
         backup_y = y;
-        current_gc.clearRect(x, y, side_length, side_length);
+//        current_gc.clearRect(x, y, side_length, side_length);
         switch (direction) {
             case UP:
                 y -= speed;
@@ -90,19 +77,12 @@ public abstract class Tank extends BaseObject {
                 x += speed;
                 break;
         }
-        List<BaseObject> baseObjectList = new ArrayList<>();
-//        baseObjectList.addAll(Game.playerTanks);
-        baseObjectList.addAll(Game.enemyTanks);
-        baseObjectList.addAll(Game.walls);
-        for (BaseObject object : baseObjectList) {
-            if (collisionDetection(object)) {
-                x = backup_x;
-                y = backup_y;
-                draw();
-                return;
-            }
+        if (collisionDetection() != null) {
+            x = backup_x;
+            y = backup_y;
+            return false;
         }
-        draw();
+        return true;
     }
 
     @Override

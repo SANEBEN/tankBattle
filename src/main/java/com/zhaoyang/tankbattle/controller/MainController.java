@@ -18,7 +18,6 @@ public class MainController {
     @FXML
     Pane root;
 
-
     @FXML
     public void startNewSingleGame() throws Exception {
         Stage stage = (Stage) root.getScene().getWindow();

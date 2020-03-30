@@ -26,4 +26,9 @@ public class Wall extends BaseObject {
             Game.walls.remove(this);
         }
     }
+
+    @Override
+    public BaseObject collisionDetection() {
+        return null;
+    }
 }
