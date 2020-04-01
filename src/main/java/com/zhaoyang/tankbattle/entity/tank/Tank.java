@@ -62,7 +62,6 @@ public abstract class Tank extends BaseObject {
         double backup_x, backup_y;
         backup_x = x;
         backup_y = y;
-//        current_gc.clearRect(x, y, side_length, side_length);
         switch (direction) {
             case UP:
                 y -= speed;

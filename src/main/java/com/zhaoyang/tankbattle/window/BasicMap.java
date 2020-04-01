@@ -32,12 +32,9 @@ public class BasicMap extends Application {
     }
 
     public void load(Stage stage) {
-//        Parent root = FXMLLoader.load(getClass().getResource("/fxml/basic_map.fxml"));
 
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 960, 640); // 30 x 20
-//        MainCanvas mainCanvas = new MainCanvas(960, 640);//30x20
-//        mainCanvas.getGc().setFill(Color.color(255, 255, 255, 0));
 
         WallCanvas wallCanvas = new WallCanvas(960, 640);
         wallCanvas.getGraphicsContext2D().setFill(Color.color(1, 1, 1, 0));//设置背景透明
@@ -48,7 +45,7 @@ public class BasicMap extends Application {
         BulletCanvas bulletCanvas = new BulletCanvas(960, 640);
         bulletCanvas.getGraphicsContext2D().setFill(Color.color(1, 1, 1, 0));
 
-        root.getChildren().addAll(tankCanvas, bulletCanvas, wallCanvas);
+        root.getChildren().addAll(bulletCanvas, tankCanvas, wallCanvas);
         scene.setFill(Color.BLACK);
         stage.setTitle("坦克大战2010————单人游戏");
         stage.setScene(scene);
@@ -107,7 +104,7 @@ class KeyReleaseHandler implements EventHandler<KeyEvent> {
     }
 }
 
-class moveThread extends Thread{
+class moveThread extends Thread {
     @Override
     public void run() {
         while (BasicMap.isMove) {

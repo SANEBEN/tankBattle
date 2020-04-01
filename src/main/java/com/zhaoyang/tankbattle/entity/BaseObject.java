@@ -1,13 +1,15 @@
 package com.zhaoyang.tankbattle.entity;
 
 import com.zhaoyang.tankbattle.util.ThreadFactory;
+import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.util.game.Img;
-import com.zhaoyang.tankbattle.window.BasicMap;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+
+import java.util.List;
 
 /**
  * @author 昭阳
@@ -23,6 +25,8 @@ public abstract class BaseObject {
     public double side_length;
     public Direction direction;
     public boolean breakable = true;
+
+    public List<BaseObject> baseObjectList;
 
     public Image current_img;
 
@@ -63,9 +67,21 @@ public abstract class BaseObject {
         current_gc.clearRect(x, y, side_length, side_length);
     }
 
+    //物体碰撞检测的方法
+    public BaseObject collisionDetection() {
+        double current_center_x = x + side_length / 2;
+        double current_center_y = y + side_length / 2;
+        for (BaseObject baseObject : baseObjectList) {
+            double center_x = baseObject.x + Game.UNIT_LENGTH / 2;
+            double center_y = baseObject.y + Game.UNIT_LENGTH / 2;
+            if (Math.abs(current_center_x - center_x) < side_length / 2 + baseObject.side_length / 2 &&//横向判断
+                    Math.abs(current_center_y - center_y) < side_length / 2 + baseObject.side_length / 2) {
+                return baseObject;
+            }
+        }
+        return null;
+    }
+
     //物体被击中的抽象方法，由子类实现。
     public abstract void beHit();
-
-    //物体碰撞检测的方法
-    public abstract BaseObject collisionDetection();
 }

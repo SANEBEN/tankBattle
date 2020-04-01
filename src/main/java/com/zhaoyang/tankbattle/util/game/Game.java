@@ -1,6 +1,6 @@
 package com.zhaoyang.tankbattle.util.game;
 
-import com.zhaoyang.tankbattle.entity.*;
+import com.zhaoyang.tankbattle.entity.Direction;
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
 import com.zhaoyang.tankbattle.entity.bullet.BulletScheduledService;
 import com.zhaoyang.tankbattle.entity.tank.EnemyTank;
@@ -14,7 +14,6 @@ import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
 import com.zhaoyang.tankbattle.window.canvas.WallCanvas;
 import javafx.concurrent.Worker;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +31,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Game {
-
-//    private static GraphicsContext gc;
-//
-//    public static GraphicsContext tank_canvas_gc;
 
     public static GraphicsContext wall_canvas_gc;
 
@@ -56,19 +51,19 @@ public class Game {
 
     public static int[][] map = {
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
-            {2, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
-            {2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
@@ -104,19 +99,9 @@ public class Game {
         tankScheduleService.setPeriod(Duration.seconds(0.02));
         tankScheduleService.start();
 
-        enemyTankScheduleService.setDelay(Duration.seconds(0.1));
+        enemyTankScheduleService.setDelay(Duration.seconds(0.01));
         enemyTankScheduleService.setPeriod(Duration.seconds(0.02));
         enemyTankScheduleService.start();
-
-        bulletScheduledService.valueProperty().addListener((observable, oldValue, newValue) -> {
-            log.info(oldValue);
-            log.info(newValue);
-        });
-
-        bulletScheduledService.lastValueProperty().addListener((observable, oldValue, newValue) -> {
-            log.info("2333:" + oldValue);
-            log.info("2333:" + newValue);
-        });
     }
 
     public static void addBullet(Bullet bullet) {
@@ -157,6 +142,7 @@ public class Game {
                     Wall wall = new Wall(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.GRASS, true);
                     wall.draw();
                 } else if (mark == 4) {
+                    //玩家基地作为
                     Base base = new Base(x * UNIT_LENGTH, y * UNIT_LENGTH, Img.BASE, true);
                     base.draw();
                     Game.base = base;
@@ -170,12 +156,12 @@ public class Game {
         enemyTank.setBlood(10);
         enemyTank.setSpeed(2);
         enemyTank.setLocation(320, 320);
-        enemyTank.setUp(Img.TANK_ENEMY_GREEN_TOP);
-        enemyTank.setDown(Img.TANK_ENEMY_GREEN_BUTTON);
-        enemyTank.setLeft(Img.TANK_ENEMY_GREEN_LEFT);
-        enemyTank.setRight(Img.TANK_ENEMY_GREEN_RIGHT);
-        enemyTank.setDirection(Direction.DOWN);
         enemyTanks.add(enemyTank);
+        EnemyTank enemyTank2 = new EnemyTank();
+        enemyTank2.setBlood(10);
+        enemyTank2.setSpeed(2);
+        enemyTank2.setLocation(352, 320);
+        enemyTanks.add(enemyTank2);
     }
 
     public static void InitPlayer() {
@@ -189,6 +175,5 @@ public class Game {
         playerTank.setRight(Img.TANK_PLAYER_YELLOW_RIGHT);
         playerTank.setDirection(Direction.LEFT);
         Game.playerTank = playerTank;
-//        playerTank.draw();
     }
 }
