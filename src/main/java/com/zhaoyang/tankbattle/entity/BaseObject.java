@@ -1,5 +1,6 @@
 package com.zhaoyang.tankbattle.entity;
 
+import com.zhaoyang.tankbattle.entity.animation.Explode;
 import com.zhaoyang.tankbattle.util.ThreadFactory;
 import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.util.game.Img;
@@ -32,6 +33,15 @@ public abstract class BaseObject {
 
     public GraphicsContext current_gc;
 
+    public BaseObject() {
+    }
+
+    public BaseObject(double x, double y, double side_length) {
+        this.x = x;
+        this.y = y;
+        this.side_length = side_length;
+    }
+
     //绘制图形到canvas上
     public void draw() {
         current_gc.drawImage(current_img,
@@ -41,30 +51,7 @@ public abstract class BaseObject {
 
     //触发物体爆炸动画的效果
     public void explode() {
-        Image[] blast = Img.blast;
-        double object_center_x = this.getX() + this.side_length / 2;
-        double object_center_y = this.getY() + this.side_length / 2;
-        log.info(object_center_x + "   " + object_center_y);
-        Thread thread = new Thread(() -> {
-            for (int i = 0; i < 8; i++) {
-                current_gc.drawImage(blast[i],
-                        1, 1, blast[i].getWidth(), blast[i].getHeight(),
-                        x, y, side_length, side_length);
-//                try {
-//                    Thread.sleep(20);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-            }
-            current_gc.clearRect(x, y, side_length, side_length);
-        });
-        ThreadFactory.execute(thread);
-        thread.interrupt();
-    }
-
-    //清除物体在canvas上的图像
-    public void clean() {
-        current_gc.clearRect(x, y, side_length, side_length);
+        Game.addExplode(new Explode(x, y, side_length));
     }
 
     //物体碰撞检测的方法

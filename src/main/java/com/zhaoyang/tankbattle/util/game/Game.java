@@ -1,6 +1,8 @@
 package com.zhaoyang.tankbattle.util.game;
 
 import com.zhaoyang.tankbattle.entity.Direction;
+import com.zhaoyang.tankbattle.entity.animation.Explode;
+import com.zhaoyang.tankbattle.entity.animation.ExplodeScheduleService;
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
 import com.zhaoyang.tankbattle.entity.bullet.BulletScheduledService;
 import com.zhaoyang.tankbattle.entity.tank.EnemyTank;
@@ -9,6 +11,7 @@ import com.zhaoyang.tankbattle.entity.tank.PlayerTank;
 import com.zhaoyang.tankbattle.entity.tank.TankScheduleService;
 import com.zhaoyang.tankbattle.entity.wall.Base;
 import com.zhaoyang.tankbattle.entity.wall.Wall;
+import com.zhaoyang.tankbattle.window.canvas.AnimationCanvas;
 import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
 import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
 import com.zhaoyang.tankbattle.window.canvas.WallCanvas;
@@ -33,6 +36,8 @@ import java.util.List;
 public class Game {
 
     public static GraphicsContext wall_canvas_gc;
+
+    public static AnimationCanvas animationCanvas;
 
     public static BulletCanvas bulletCanvas;
 
@@ -81,6 +86,9 @@ public class Game {
     //电脑坦克
     public static List<EnemyTank> enemyTanks = new ArrayList<>();
 
+    //需要渲染的爆炸效果信息
+    public static List<Explode> explodes = new ArrayList<>();
+
     //当前子弹
     public static List<Bullet> bullets = new ArrayList<>();
 
@@ -89,6 +97,8 @@ public class Game {
     private static TankScheduleService tankScheduleService = new TankScheduleService();
 
     private static EnemyTankScheduleService enemyTankScheduleService = new EnemyTankScheduleService();
+
+    private static ExplodeScheduleService explodeScheduleService = new ExplodeScheduleService();
 
     static {
         bulletScheduledService.setDelay(Duration.seconds(0.02));
@@ -102,6 +112,10 @@ public class Game {
         enemyTankScheduleService.setDelay(Duration.seconds(0.01));
         enemyTankScheduleService.setPeriod(Duration.seconds(0.02));
         enemyTankScheduleService.start();
+
+        explodeScheduleService.setDelay(Duration.seconds(0.02));
+        explodeScheduleService.setPeriod(Duration.seconds(0.02));
+        explodeScheduleService.start();
     }
 
     public static void addBullet(Bullet bullet) {
@@ -116,6 +130,20 @@ public class Game {
     public static void checkBullet() {
         if (bullets.size() == 0) {
             bulletScheduledService.cancel();
+        }
+    }
+
+    public static void addExplode(Explode explode) {
+        explodes.add(explode);
+        if (explodeScheduleService.getState() != Worker.State.CANCELLED) {
+            explodeScheduleService.restart();
+        }
+    }
+
+    public static void removeExplode(Explode explode) {
+        explodes.remove(explode);
+        if (explodes.size() == 0) {
+            explodeScheduleService.cancel();
         }
     }
 

@@ -22,4 +22,8 @@ public class PlayerTank extends Tank {
     public Bullet fire() {
         return new Bullet(Img.BULLET_PLAYER, this, x, y, getDirection());
     }
+
+    @Override
+    public void beHit() {
+    }
 }

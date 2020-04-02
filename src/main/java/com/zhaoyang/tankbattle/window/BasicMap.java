@@ -3,6 +3,7 @@ package com.zhaoyang.tankbattle.window;
 import com.zhaoyang.tankbattle.entity.Direction;
 import com.zhaoyang.tankbattle.util.ThreadFactory;
 import com.zhaoyang.tankbattle.util.game.Game;
+import com.zhaoyang.tankbattle.window.canvas.AnimationCanvas;
 import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
 import com.zhaoyang.tankbattle.window.canvas.TankCanvas;
 import com.zhaoyang.tankbattle.window.canvas.WallCanvas;
@@ -45,7 +46,10 @@ public class BasicMap extends Application {
         BulletCanvas bulletCanvas = new BulletCanvas(960, 640);
         bulletCanvas.getGraphicsContext2D().setFill(Color.color(1, 1, 1, 0));
 
-        root.getChildren().addAll(bulletCanvas, tankCanvas, wallCanvas);
+        AnimationCanvas animationCanvas = new AnimationCanvas(960, 640);
+        animationCanvas.getGraphicsContext2D().setFill(Color.color(1, 1, 1, 0));
+
+        root.getChildren().addAll(bulletCanvas, tankCanvas, wallCanvas, animationCanvas);
         scene.setFill(Color.BLACK);
         stage.setTitle("坦克大战2010————单人游戏");
         stage.setScene(scene);

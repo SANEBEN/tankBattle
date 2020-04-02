@@ -24,6 +24,7 @@ public class Wall extends BaseObject {
         if (isBreakable()) {
             current_gc.clearRect(x, y, side_length, side_length);
             Game.walls.remove(this);
+            explode();
         }
     }
 

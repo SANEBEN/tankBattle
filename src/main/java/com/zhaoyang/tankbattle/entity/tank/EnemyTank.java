@@ -44,4 +44,9 @@ public class EnemyTank extends Tank {
         }
     }
 
+    @Override
+    public void beHit() {
+
+    }
+
 }

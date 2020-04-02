@@ -84,10 +84,5 @@ public abstract class Tank extends BaseObject {
         return true;
     }
 
-    @Override
-    public void beHit() {
-
-    }
-
     public abstract Bullet fire();
 }

@@ -27,7 +27,7 @@ public class Bullet extends BaseObject {
         this.source = source;
         this.current_img = img;
         this.current_gc = Game.bulletCanvas.getGraphicsContext2D();
-        //因为x,y的数值为坦克左上角的坐标，为了试子弹从坦克的炮管的位置打出，需要调整子弹绘制的坐标
+        //因为x,y的数值为坦克左上角的坐标，为了让子弹从坦克的炮管的位置打出，需要调整子弹绘制的坐标
         switch (direction) {
             case UP:
                 this.x = x + Game.UNIT_LENGTH / 2 - side_length / 2;
@@ -73,8 +73,8 @@ public class Bullet extends BaseObject {
                 x = backup_x;
                 y = backup_y;
                 Game.bullets.remove(this);
-                log.info(object.x + "   " + object.y);
-                log.info(object.getClass().getName());
+//                log.info(object.x + "   " + object.y);
+//                log.info(object.getClass().getName());
                 object.beHit();
             }
         });
