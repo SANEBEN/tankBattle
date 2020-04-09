@@ -7,6 +7,7 @@ import javafx.concurrent.Task;
 /**
  * @author 昭阳
  * @date 2020/3/30 9:05
+ * 坦克移动轨迹绘制线程
  */
 public class TankScheduleService extends ScheduledService<String> {
     @Override

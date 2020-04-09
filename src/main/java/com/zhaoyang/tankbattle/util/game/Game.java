@@ -5,10 +5,7 @@ import com.zhaoyang.tankbattle.entity.animation.Explode;
 import com.zhaoyang.tankbattle.entity.animation.ExplodeScheduleService;
 import com.zhaoyang.tankbattle.entity.bullet.Bullet;
 import com.zhaoyang.tankbattle.entity.bullet.BulletScheduledService;
-import com.zhaoyang.tankbattle.entity.tank.EnemyTank;
-import com.zhaoyang.tankbattle.entity.tank.EnemyTankScheduleService;
-import com.zhaoyang.tankbattle.entity.tank.PlayerTank;
-import com.zhaoyang.tankbattle.entity.tank.TankScheduleService;
+import com.zhaoyang.tankbattle.entity.tank.*;
 import com.zhaoyang.tankbattle.entity.wall.Base;
 import com.zhaoyang.tankbattle.entity.wall.Wall;
 import com.zhaoyang.tankbattle.window.canvas.AnimationCanvas;
@@ -92,6 +89,8 @@ public class Game {
     //当前子弹
     public static List<Bullet> bullets = new ArrayList<>();
 
+    private static AutoFireScheduleService autoFireScheduleService = new AutoFireScheduleService();
+
     private static BulletScheduledService bulletScheduledService = new BulletScheduledService();
 
     private static TankScheduleService tankScheduleService = new TankScheduleService();
@@ -101,6 +100,10 @@ public class Game {
     private static ExplodeScheduleService explodeScheduleService = new ExplodeScheduleService();
 
     static {
+        autoFireScheduleService.setDelay(Duration.seconds(0.02));
+        autoFireScheduleService.setPeriod(Duration.seconds(3));
+        autoFireScheduleService.start();
+
         bulletScheduledService.setDelay(Duration.seconds(0.02));
         bulletScheduledService.setPeriod(Duration.seconds(0.02));
         bulletScheduledService.start();

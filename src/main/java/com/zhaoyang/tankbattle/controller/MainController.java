@@ -1,5 +1,7 @@
 package com.zhaoyang.tankbattle.controller;
 
+import com.zhaoyang.tankbattle.util.WindowsManage;
+import com.zhaoyang.tankbattle.window.BasicMap;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +23,9 @@ public class MainController {
     @FXML
     public void startNewSingleGame() throws Exception {
         Stage stage = (Stage) root.getScene().getWindow();
-//        stage.hide();
+        stage.hide();
+        BasicMap basicMap = new BasicMap();
+        basicMap.start(new Stage());
     }
 
     @FXML

@@ -27,10 +27,8 @@ public class Main extends Application {
         stage.setScene(new Scene(root, 800, 500));
         stage.show();
         stage.setResizable(false);
-
         AudioClip audioClip = Music.start();
         audioClip.setCycleCount(50);
-//        audioClip.play();
         stage.setOnHiding(event -> audioClip.stop());
     }
 
@@ -41,7 +39,6 @@ public class Main extends Application {
                 main.show();
                 AudioClip audioClip = Music.start();
                 audioClip.setCycleCount(50);
-//                audioClip.play();
                 main.setOnHiding(e -> audioClip.stop());
                 main.setResizable(false);
             } catch (URISyntaxException e) {

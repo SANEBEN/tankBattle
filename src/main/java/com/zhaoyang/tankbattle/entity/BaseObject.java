@@ -1,9 +1,7 @@
 package com.zhaoyang.tankbattle.entity;
 
 import com.zhaoyang.tankbattle.entity.animation.Explode;
-import com.zhaoyang.tankbattle.util.ThreadFactory;
 import com.zhaoyang.tankbattle.util.game.Game;
-import com.zhaoyang.tankbattle.util.game.Img;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Getter;

@@ -8,6 +8,7 @@ import lombok.extern.java.Log;
 /**
  * @author 昭阳
  * @date 2020/3/30 9:14
+ * 敌方坦克运行方向控制线程
  */
 @Log
 public class EnemyTankScheduleService extends ScheduledService<String> {

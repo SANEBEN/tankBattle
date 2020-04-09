@@ -7,6 +7,7 @@ import javafx.concurrent.Task;
 /**
  * @author 昭阳
  * @date 2020/4/2 9:24
+ * 爆炸效果绘制线程
  */
 public class ExplodeScheduleService extends ScheduledService<String> {
 

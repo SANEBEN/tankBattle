@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<Pane fx:id="root" prefHeight="540.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaoyang.tankbattle.controller.MainController">
+<Pane fx:id="root" prefHeight="540.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaoyang.tankbattle.controller.MainController">
     <children>
-        <ImageView fitHeight="222.0" fitWidth="426.0" layoutX="187.0" layoutY="30.0"  pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="222.0" fitWidth="426.0" layoutX="187.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@/img/text/title.gif" />
         </ImageView>
-        <ImageView fx:id="singleGame" fitHeight="57.0" fitWidth="200.0" layoutX="300.0" layoutY="288.0" onMouseClicked="#startNewSingleGame" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="singleGame" fitHeight="57.0" fitWidth="200.0" layoutX="300.0" layoutY="321.0" onMouseClicked="#startNewSingleGame" pickOnBounds="true" preserveRatio="true">
             <Image url="@/img/text/SinglePlayer.gif" />
-        </ImageView>
-        <ImageView fx:id="doubleGame" fitHeight="57.0" fitWidth="200.0" layoutX="300.0" layoutY="407.0" onMouseClicked="#startNewDoubleGame" pickOnBounds="true" preserveRatio="true">
-            <Image url="@/img/text/DoublePlayer.gif" />
         </ImageView>
     </children>
 </Pane>

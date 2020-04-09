@@ -67,14 +67,14 @@ public class Bullet extends BaseObject {
             case LEFT:
                 x -= speed;
         }
+        //因为使用的是非界面的子线程有时候会报错
+        //java.lang.IllegalStateException: Service must only be used from the FX Application Thread
         Thread thread = new Thread(() -> {
             BaseObject object;
             if ((object = collisionDetection()) != null && object != source) {
                 x = backup_x;
                 y = backup_y;
                 Game.bullets.remove(this);
-//                log.info(object.x + "   " + object.y);
-//                log.info(object.getClass().getName());
                 object.beHit();
             }
         });

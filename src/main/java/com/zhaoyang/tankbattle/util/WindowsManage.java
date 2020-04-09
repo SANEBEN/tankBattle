@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * @author 昭阳
  * @date 2020/3/25 9:22
+ * 窗体管理类   暂时没用上
  */
 public class WindowsManage {
 

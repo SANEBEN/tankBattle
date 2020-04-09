@@ -2,6 +2,7 @@ package com.zhaoyang.tankbattle.window;
 
 import com.zhaoyang.tankbattle.entity.Direction;
 import com.zhaoyang.tankbattle.util.ThreadFactory;
+import com.zhaoyang.tankbattle.util.WindowsManage;
 import com.zhaoyang.tankbattle.util.game.Game;
 import com.zhaoyang.tankbattle.window.canvas.AnimationCanvas;
 import com.zhaoyang.tankbattle.window.canvas.BulletCanvas;
@@ -29,6 +30,7 @@ public class BasicMap extends Application {
 
     public void start(Stage primaryStage) {
         load(primaryStage);
+        primaryStage.setOnCloseRequest(event -> Main.reOpen());
         primaryStage.show();
     }
 
